@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://cvwnak3p5merd"]
+[gd_scene load_steps=39 format=3 uid="uid://cvwnak3p5merd"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_2qjlm"]
 [ext_resource type="Texture2D" uid="uid://khkucfl8rupi" path="res://symbolatlas.png" id="1_vew8m"]
@@ -18,6 +18,10 @@ region = Rect2(48, 48, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_5rnlm"]
 atlas = ExtResource("1_vew8m")
 region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffmxn"]
+atlas = ExtResource("1_vew8m")
+region = Rect2(16, 48, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c3nsq"]
 atlas = ExtResource("1_vew8m")
@@ -129,7 +133,10 @@ animations = [{
 "name": &"d",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffmxn")
+}],
 "loop": true,
 "name": &"dh",
 "speed": 5.0
@@ -408,7 +415,7 @@ script = ExtResource("1_2qjlm")
 
 [node name="Consonant" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kwfhr")
-animation = &"g"
+animation = &"dh"
 
 [node name="Reverse" type="Sprite2D" parent="."]
 position = Vector2(0, -14)

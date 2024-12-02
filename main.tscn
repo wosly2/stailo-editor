@@ -7,6 +7,48 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_yj6gf")
+character_prefab = ExtResource("2_rs3c0")
+
+[node name="GUI" type="VBoxContainer" parent="."]
+z_index = 1
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 133.0
+offset_bottom = 247.0
+
+[node name="Consonant" type="TextEdit" parent="GUI"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "Consonant"
+
+[node name="Vowel" type="TextEdit" parent="GUI"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "Vowel"
+
+[node name="Reverse" type="CheckButton" parent="GUI"]
+layout_mode = 2
+text = "Reversed"
+
+[node name="Submit" type="Button" parent="GUI"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Submit"
+
+[node name="Backspace" type="Button" parent="GUI"]
+modulate = Color(1, 0.541176, 0.52549, 0.627451)
+layout_mode = 2
+text = "Backspace"
+
+[node name="Clear" type="Button" parent="GUI"]
+modulate = Color(1, 0.541176, 0.52549, 0.627451)
+layout_mode = 2
+text = "Clear"
+
+[node name="Error" type="Label" parent="GUI"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+horizontal_alignment = 1
 
 [node name="Background" type="MeshInstance2D" parent="."]
 position = Vector2(576, 324)
@@ -15,10 +57,9 @@ mesh = SubResource("BoxMesh_poa2u")
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Character" parent="Characters" instance=ExtResource("2_rs3c0")]
-position = Vector2(321, 311)
-character = {
-"consonant": "p",
-"reverse": false,
-"vowel": "oo"
-}
+[node name="TextStart" type="Node2D" parent="."]
+position = Vector2(111, 314)
+
+[connection signal="pressed" from="GUI/Submit" to="." method="_on_submit_pressed"]
+[connection signal="pressed" from="GUI/Backspace" to="." method="_on_backspace_pressed"]
+[connection signal="pressed" from="GUI/Clear" to="." method="_on_clear_pressed"]
