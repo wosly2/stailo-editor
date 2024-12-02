@@ -1,65 +1,172 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxkg1p83sggvd"]
+[gd_scene load_steps=9 format=3 uid="uid://dxkg1p83sggvd"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_yj6gf"]
 [ext_resource type="PackedScene" uid="uid://cvwnak3p5merd" path="res://character.tscn" id="2_rs3c0"]
+[ext_resource type="Texture2D" uid="uid://khkucfl8rupi" path="res://symbolatlas.png" id="3_p0i2y"]
+
+[sub_resource type="FontVariation" id="FontVariation_d0pfx"]
+variation_transform = Transform2D(1, 0.2, 0, 1, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_poa2u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxwrs"]
+atlas = ExtResource("3_p0i2y")
+region = Rect2(80, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g5lno"]
+atlas = ExtResource("3_p0i2y")
+region = Rect2(80, 80, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5xngs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rxwrs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g5lno")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_yj6gf")
 character_prefab = ExtResource("2_rs3c0")
 
 [node name="GUI" type="VBoxContainer" parent="."]
-z_index = 1
-offset_left = 13.0
-offset_top = 14.0
-offset_right = 133.0
-offset_bottom = 247.0
+top_level = true
+z_index = 5
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 151.0
+offset_bottom = 628.0
 
 [node name="Consonant" type="TextEdit" parent="GUI"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-size_flags_vertical = 3
 placeholder_text = "Consonant"
 
 [node name="Vowel" type="TextEdit" parent="GUI"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-size_flags_vertical = 3
 placeholder_text = "Vowel"
 
 [node name="Reverse" type="CheckButton" parent="GUI"]
 layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Reversed"
 
 [node name="Submit" type="Button" parent="GUI"]
 layout_mode = 2
-size_flags_vertical = 3
 text = "Submit"
 
-[node name="Backspace" type="Button" parent="GUI"]
-modulate = Color(1, 0.541176, 0.52549, 0.627451)
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI"]
 layout_mode = 2
-text = "Backspace"
 
-[node name="Clear" type="Button" parent="GUI"]
-modulate = Color(1, 0.541176, 0.52549, 0.627451)
+[node name="AddSpace" type="Button" parent="GUI/HBoxContainer"]
 layout_mode = 2
-text = "Clear"
+text = "_"
+
+[node name="Newline" type="Button" parent="GUI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "\\n"
+
+[node name="SubtractLine" type="Button" parent="GUI/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.682353)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "-\\n"
+
+[node name="Clear" type="Button" parent="GUI/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "X"
+
+[node name="Backspace" type="Button" parent="GUI/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "⌫"
+
+[node name="UseCursor" type="CheckButton" parent="GUI"]
+layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+button_pressed = true
+text = "Cursor"
 
 [node name="Error" type="Label" parent="GUI"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "Error Text"
 horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="Background" type="MeshInstance2D" parent="."]
-position = Vector2(576, 324)
-scale = Vector2(1152, 648)
-mesh = SubResource("BoxMesh_poa2u")
+[node name="Output" type="Label" parent="GUI"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.40642, 0.40642, 0.40642, 1)
+theme_override_colors/font_shadow_color = Color(0.595154, 0.595154, 0.595154, 1)
+theme_override_fonts/font = SubResource("FontVariation_d0pfx")
+text = "Output Text"
+autowrap_mode = 1
 
 [node name="Characters" type="Node" parent="."]
 
+[node name="Character" parent="Characters" instance=ExtResource("2_rs3c0")]
+position = Vector2(226, 64)
+
 [node name="TextStart" type="Node2D" parent="."]
-position = Vector2(111, 314)
+position = Vector2(200, 64)
+
+[node name="Background3" type="Node" parent="."]
+
+[node name="Sidebar" type="MeshInstance2D" parent="Background3"]
+modulate = Color(0.74558, 0.74558, 0.74558, 1)
+z_index = 1
+position = Vector2(76, 324)
+scale = Vector2(152, 648)
+mesh = SubResource("BoxMesh_poa2u")
+
+[node name="Foreground" type="MeshInstance2D" parent="Background3"]
+position = Vector2(652, 324)
+scale = Vector2(952, 600)
+mesh = SubResource("BoxMesh_poa2u")
+
+[node name="Background" type="MeshInstance2D" parent="Background3"]
+modulate = Color(0.101868, 0.101868, 0.101868, 1)
+z_index = -1
+position = Vector2(638.5, 324)
+scale = Vector2(1027, 648)
+mesh = SubResource("BoxMesh_poa2u")
+
+[node name="Cursor" type="Node2D" parent="."]
+position = Vector2(256, 64)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Cursor"]
+z_index = 4
+position = Vector2(0, 2)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5xngs")
+frame_progress = 0.169121
 
 [connection signal="pressed" from="GUI/Submit" to="." method="_on_submit_pressed"]
-[connection signal="pressed" from="GUI/Backspace" to="." method="_on_backspace_pressed"]
-[connection signal="pressed" from="GUI/Clear" to="." method="_on_clear_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/AddSpace" to="." method="_on_add_space_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/Newline" to="." method="_on_newline_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/SubtractLine" to="." method="_on_subtract_line_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/Clear" to="." method="_on_clear_pressed"]
+[connection signal="pressed" from="GUI/HBoxContainer/Backspace" to="." method="_on_backspace_pressed"]
+[connection signal="toggled" from="GUI/UseCursor" to="." method="_on_use_cursor_toggled"]

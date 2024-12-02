@@ -410,12 +410,13 @@ animations = [{
 }]
 
 [node name="Character" type="Node2D"]
+z_index = 4
 scale = Vector2(2, 2)
 script = ExtResource("1_2qjlm")
 
 [node name="Consonant" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kwfhr")
-animation = &"dh"
+animation = &"ng"
 
 [node name="Reverse" type="Sprite2D" parent="."]
 position = Vector2(0, -14)

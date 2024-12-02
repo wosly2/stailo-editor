@@ -4,16 +4,17 @@ extends Node2D
 	"consonant": "g",
 	"vowel": "ee",
 	"reverse": true,
+	"is_space": false,
 }
 
-func format(character=character):
-	$Consonant.animation = character["consonant"]
-	$Vowel.animation = character["vowel"]
+func format(char=character):
+	$Consonant.animation = char["consonant"]
+	$Vowel.animation = char["vowel"]
 	$Reverse.hide()
-	if character["reverse"]:
+	if char["reverse"]:
 		$Reverse.show()
 	$Reverse.position = $VowelTop.position
-	var vowel = character["vowel"]
+	var vowel = char["vowel"]
 	if vowel in ["ih", "ai"]:
 		$Vowel.position = $VowelTop.position
 		$Reverse.position = $ReverseTop.position
