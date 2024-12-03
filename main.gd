@@ -26,6 +26,7 @@ const consonants = {
 	"[":"sh",
 	"]":"ch",
 	"*":"ng",
+	"@":"@"
 }
 
 var vowels = {
