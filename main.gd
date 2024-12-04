@@ -42,20 +42,22 @@ var vowels = {
 	"0":"",
 }
 
-@onready var body = [
-	[
-		$TextStart.global_position,
-		[
-			{"consonant":"h", "vowel":"eh", "reverse":false, "is_space":false}, # heh
-			{"consonant":"l", "vowel":"oh", "reverse":false, "is_space":false}, # loh
-			{"consonant":"", "vowel":"", "reverse":false, "is_space":true}, # space
-			{"consonant":"w", "vowel":"uh", "reverse":false, "is_space":false}, # wuh
-			{"consonant":"r", "vowel":"", "reverse":false, "is_space":false}, # r
-			{"consonant":"l", "vowel":"", "reverse":false, "is_space":false}, # l
-			{"consonant":"d", "vowel":"", "reverse":false, "is_space":false}, # d
-		]
-	]
-]
+#@onready var body = [
+	#[
+		#$TextStart.global_position,
+		#[
+			#{"consonant":"h", "vowel":"eh", "reverse":false, "is_space":false}, # heh
+			#{"consonant":"l", "vowel":"oh", "reverse":false, "is_space":false}, # loh
+			#{"consonant":"", "vowel":"", "reverse":false, "is_space":true}, # space
+			#{"consonant":"w", "vowel":"uh", "reverse":false, "is_space":false}, # wuh
+			#{"consonant":"r", "vowel":"", "reverse":false, "is_space":false}, # r
+			#{"consonant":"l", "vowel":"", "reverse":false, "is_space":false}, # l
+			#{"consonant":"d", "vowel":"", "reverse":false, "is_space":false}, # d
+		#]
+	#]
+#]
+
+@onready var body = text_to_body("h.eh.-l.oh.-space-w.uh.-r..-l..-d..", $TextStart.global_position)
 
 func get_length(character) -> int:
 	return 32 + (16 if character["vowel"] in ["ae", "ah"] else 0)
@@ -81,6 +83,7 @@ func _ready() -> void:
 	render_text(body)
 	$GUI/Error.text = ""
 	$Cursor/AnimatedSprite2D.play()
+	$InputPopup/VBoxContainer/TextEdit.text = body_to_text(body)
 
 func _on_submit_pressed() -> void:
 	var cons = $GUI/Consonant.text
@@ -137,6 +140,40 @@ func body_to_text(body) -> String:
 			output += "\n"
 	return output
 
+func text_to_body(text: String, render_pos: Vector2) -> Array:
+	# Convert text back to body format
+	if text == "":
+		return []
+	
+	var body = []
+	var lines = text.split("\n")
+	for line in lines:
+		var output_line = []
+		var symbols = line.split("-")
+		for symbol in symbols:
+			if symbol == "space":
+				output_line.append({
+					"consonant": "",
+					"vowel": "",
+					"reverse": false,
+					"is_space": true
+				})
+			else:
+				var char = symbol.split(".")
+				# Validate that the format contains at least consonant and vowel
+				if len(char) < 2:
+					push_error("Invalid symbol format: %s" % symbol)
+					continue
+				output_line.append({
+					"consonant": char[0],
+					"vowel": char[1],
+					"reverse": "rev" in symbol,
+					"is_space": false
+				})
+		# Append line with its position
+		body.append([render_pos, output_line])
+		render_pos.y += 64  # Adjust render position for the next line
+	return body
 
 func _on_use_cursor_toggled(toggled_on: bool) -> void:
 	if toggled_on:
@@ -152,4 +189,27 @@ func _on_add_space_pressed() -> void:
 		"reverse":false,
 		"is_space":true,
 	})
+	render_text(body)
+
+func _on_edit_manually_pressed() -> void:
+	$InputPopup.global_position = Vector2(0, 0)
+	for child in $Characters.get_children():
+		child.hide()
+	$Cursor.hide()
+	$InputPopup/VBoxContainer/TextEdit.text = body_to_text(body)
+
+
+func _on_cancel_pressed() -> void:
+	$InputPopup.global_position = Vector2(10000, 10000)
+	for child in $Characters.get_children():
+		child.show()
+	$Cursor.show()
+
+
+func _on_submit_text_pressed() -> void:
+	$InputPopup.global_position = Vector2(10000, 10000)
+	for child in $Characters.get_children():
+		child.show()
+	$Cursor.show()
+	body = text_to_body($InputPopup/VBoxContainer/TextEdit.text, $TextStart.global_position)
 	render_text(body)
